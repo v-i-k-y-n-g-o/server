@@ -51,7 +51,7 @@ if (parsedArgs.verbose){
 
 // Routes
 const routes = require('./routes');
-app.use('/api', routes);
+app.use('', routes);
 
 // HTTPS
 const server = (config.HTTPS) ? https.createServer(settings.https, function(req,res) {app(req,res)}) 

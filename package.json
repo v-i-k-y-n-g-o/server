@@ -13,8 +13,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "base-x": "3.0.4",
     "bigchaindb-driver": "4.1.0",
-    "bip39": "^3.0.2",
+    "bip39": "2.5.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",

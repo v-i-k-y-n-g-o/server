@@ -10,14 +10,14 @@ const logger = require('../utils/logger');
 // Routes
 const auth = require('./auth');
 const docs = require('./docs');
-const owners = require('./owners');
+const keys = require('./keys');
 const assets = require('./assets');
 
 routes.use(express.static(__dirname + '/docs'));
 routes.use('/docs', docs);
 routes.use('/auth', auth);
 routes.use(auth.verifyToken); // TODO: ADD AS A HELPER
-routes.use('/api', owners);
+routes.use('/api', keys);
 routes.use('/api', assets);
 
 // If no route is matched by now, return API version

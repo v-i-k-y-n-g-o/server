@@ -29,7 +29,7 @@ const jwt = require('jsonwebtoken');
  *       "error": "Invalid password"
  *     }
  */
-router.post('/login', function (req, res, next) {
+router.get('', function (req, res, next) {
     let username = req.body.username;
     let password = req.body.password;
 
