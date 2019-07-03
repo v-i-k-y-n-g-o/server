@@ -11,14 +11,18 @@ const logger = require('../utils/logger');
 const auth = require('./auth');
 const docs = require('./docs');
 const keys = require('./keys');
-const assets = require('./assets');
+const entities = require('./entities');
+const blockchain = require('./blockchain');
+const test = require('./test');
 
 routes.use(express.static(__dirname + '/docs'));
 routes.use('/docs', docs);
 routes.use('/auth', auth);
 routes.use(auth.verifyToken); // TODO: ADD AS A HELPER
 routes.use('/api', keys);
-routes.use('/api', assets);
+routes.use('/api', entities);
+routes.use('/api', blockchain);
+routes.use('/api', test);
 
 // If no route is matched by now, return API version
 routes.use(function (req, res) {

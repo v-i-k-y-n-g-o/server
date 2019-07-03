@@ -1,20 +1,16 @@
 const environments = {
     "development": {
         "PORT": 3000,
-        "VERNEMQ": {
-            "HOST": "localhost",
-            "PORT": 1883
-        },
+        "HOST": "localhost",
         "BIGCHAINDB": {
-            "HOST": "158.176.64.163",
-            "PORT": 32815
+            "HOST": "localhost",
+            "PORT": 9984
         },
         "MONGODB": {
             "HOST": "localhost",
-            "PORT": 27018,
+            "PORT": 27017,
             "DB_NAME": "blockchainService",
-        },
-        "POSTGRESDB": ""
+        }
     }
 
 }
