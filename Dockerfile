@@ -1,7 +1,8 @@
 FROM node:latest
-
+RUN mkdir -p /usr/src/app
+ENV NODE_ENV test
 # Create app directory
-WORKDIR /usr/src/app
+WORKDIR /usr/src/
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
@@ -11,21 +12,21 @@ COPY package*.json ./
 RUN npm install
 # If you are building your code for production
 # RUN npm ci --only=production
-
+RUN npm install nodemon -g
 # Bundle app source
 COPY . .
 
 EXPOSE 3000
-CMD [ "npm", "start" ]
+CMD [ "node", "./app/server.js" ]
 
 # TODO: HACER UN VOLUME PARA LA CARPTECA DE DOCS
 
 
 
 #Para crear la imagen
-#$ docker build -t asf-server/api .
+#$ sudo docker build -t blockchain-service .
 
-#$ docker run -p 30315:3000 -d asf-server/api
+#$ sudo docker run -p 30315:3000 -d blockchain-service
 
 # Get container ID
 #$ docker ps

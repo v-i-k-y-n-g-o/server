@@ -13,3 +13,9 @@ TODO:
 - Añadir GraphQL
 - Añadir knex.js para acceso a bases de datos SQL con esto https://tabel.tech/
 - Integrar migrations de truffle con ORM
+
+
+
+Arrancar varios nodos:
+1. Cambiar puertos
+2. sudo docker-compose -p name up

@@ -88,3 +88,5 @@ package-lock.json
 
 software/*
 
+data/*
+

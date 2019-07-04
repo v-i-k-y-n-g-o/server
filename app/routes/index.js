@@ -3,6 +3,7 @@
 //module.exports = morgan
 const express = require('express');
 const routes = module.exports = express();
+const config = require('/usr/src/config/environments.js').config();
 
 // Dependencies
 const logger = require('../utils/logger');
@@ -13,6 +14,7 @@ const docs = require('./docs');
 const keys = require('./keys');
 const entities = require('./entities');
 const blockchain = require('./blockchain');
+const data = require('./data');
 const test = require('./test');
 
 routes.use(express.static(__dirname + '/docs'));
@@ -22,6 +24,7 @@ routes.use(auth.verifyToken); // TODO: ADD AS A HELPER
 routes.use('/api', keys);
 routes.use('/api', entities);
 routes.use('/api', blockchain);
+routes.use('/api', data);
 routes.use('/api', test);
 
 // If no route is matched by now, return API version

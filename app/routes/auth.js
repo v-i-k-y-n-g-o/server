@@ -1,9 +1,10 @@
 "use strict"
-
+const config = require('/usr/src/config/environments.js').config();
 const express = require('express');
 const router = express.Router();
 //const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const MongoClient = require('mongodb').MongoClient;
 
 /**
  * @api {post} /api/v1/login Request Token
@@ -33,14 +34,29 @@ router.get('', function (req, res, next) {
     let username = req.body.username;
     let password = req.body.password;
 
-    if (password !== process.env.SECRET_WORD) {
-        res.status(401).send({error: 'Invalid password'})
-        return;
-    }
-
-    const token = jwt.sign({"username": username}, process.env.SECRET_WORD);
-
-    res.status(200).json({token});
+    MongoClient.connect("mongodb://" + config.MONGODB.HOST + ":" + config.MONGODB.PORT + "/",{ useNewUrlParser: true }, function(err, db) {
+        if (err) {
+           res.status(400).send(err); 
+        }
+        else {
+            db.db(config.MONGODB.DB_NAME).collection("users").find({username: req.body.username}).project({"password": true}).toArray(function(err, resp)  {
+                if (err) {
+                    db.close();
+                    res.status(400).send(err); 
+                 }
+                else {
+                    db.close();
+                    if (resp[0].password !== password) {
+                        res.status(401).send({error: 'Invalid password'})
+                    }
+                    else {
+                        const token = jwt.sign({"username": username}, process.env.SECRET_WORD);
+                        res.status(200).json({token});
+                    }
+                }
+            }); 
+        }
+    });
 });
 
 router.verifyToken = function(req, res, next) {

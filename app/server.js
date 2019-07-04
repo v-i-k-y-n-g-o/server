@@ -4,7 +4,7 @@
 require('dotenv').config();
 
 // Configuration
-const config = require('../config/environments.js').config();
+const config = require('/usr/src/config/environments.js').config();
 const nopt = require("nopt");
 const knownOpts = {
     "verbose": Boolean,
@@ -41,14 +41,15 @@ app.use(bodyParser.json({limit: '500kb'}));
 app.use(bodyParser.urlencoded({limit: '500kb', extended: true}));
 app.use(cors());
 app.use(errorhandler);
-if (parsedArgs.verbose){
-    const morgan = require('morgan');
-    const morganBody = require('morgan-body');
-    //app.use(morgan('combined'));
-    app.use(morgan('dev', { 'stream': logger.stream }));
-    morganBody(app);
-}
-
+// if (parsedArgs.verbose){
+//     const morgan = require('morgan');
+//     const morganBody = require('morgan-body');
+//     //app.use(morgan('combined'));
+//     //app.use(morgan('dev', { 'stream': logger.stream }));
+//     morganBody(app);
+// }
+const morganBody = require('morgan-body');
+morganBody(app);
 // Routes
 const routes = require('./routes');
 app.use('', routes);
