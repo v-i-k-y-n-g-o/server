@@ -6,6 +6,7 @@ const { exec } = require('child_process');
 let Docker = require('dockerode');
 var docker = new Docker({ socketPath: '/var/run/docker.sock' });
 const MongoClient = require('mongodb').MongoClient;
+const http = require('http');
 
 router.post('/v1/blockchain/test', function (req, res) {
     docker.listContainers(function (err, containers) {
@@ -54,41 +55,69 @@ router.post('/v1/blockchain/reset', function (req, res) {
         });
 });
 
+router.get('/v1/blockchain/status', function (req, res) {
+    http.get('http://158.176.64.163:32819', (resp) => {
+        http.get('http://158.176.64.163:32790/abci_query', (resp2) => {
+            if(resp && resp2) res.sendStatus(200);
+            else res.sendStatus(404);
+            
+        }).on("error", (err) => {
+            res.status(400).send("Error: " + err.message);
+            });
+    }).on("error", (err) => {
+        res.status(400).send("Error: " + err.message);
+    });
+});
+
 router.post('/v1/blockchain/config', function (req, res) {
     //TODO: Add schema
     MongoClient.connect("mongodb://" + config.MONGODB.HOST + ":" + config.MONGODB.PORT + "/", { useNewUrlParser: true }, function (err, db) {
         if (err) res.status(400).send(err);
         else {
-            db.db(config.MONGODB.DB_NAME).collection("users").updateOne({ username: res.locals.username },
-                {
-                    $set: {
-                        default: {
-                            bigchaindb: {
-                                host: "158.176.64.163",
-                                port: "32815"
+            if(req.body.customtNode === true) {
+                db.db(config.MONGODB.DB_NAME).collection("users").updateOne({ username: res.locals.username },
+                    {
+                        $set: {
+                            custom: {
+                                bigchaindb: {
+                                    host: req.body.bigchaindb.host,
+                                    port: req.body.bigchaindb.port
+                                },
+                                mongodb: {
+                                    host: req.body.mongodb.host,
+                                    port: req.body.mongodb.port
+                                }
                             },
-                            mongodb: {
-                                host: "158.176.64.163",
-                                port: "32775"
-                            }
-                        },
-                        custom: {
-                            bigchaindb: {
-                                host: "158.176.64.163",
-                                port: "32815"
+                            customNode: true
+                        }
+                    }, function (err, resp) {
+                        db.close();
+                        if (err) res.status(400).send(err);
+                        else res.sendStatus(201);
+                    });                
+            }
+            else {
+                db.db(config.MONGODB.DB_NAME).collection("users").updateOne({ username: res.locals.username },
+                    {
+                        $set: {
+                            default: {
+                                bigchaindb: {
+                                    host: req.body.bigchaindb.host,
+                                    port: req.body.bigchaindb.port
+                                },
+                                mongodb: {
+                                    host: req.body.mongodb.host,
+                                    port: req.body.mongodb.port
+                                }
                             },
-                            mongodb: {
-                                host: "158.176.64.163",
-                                port: "32775"
-                            }
-                        },
-                        defaultNode: true
-                    }
-                }, function (err, resp) {
-                    db.close();
-                    if (err) res.status(400).send(err);
-                    else res.sendStatus(201);
-                });
+                            defaultNode: false
+                        }
+                    }, function (err, resp) {
+                        db.close();
+                        if (err) res.status(400).send(err);
+                        else res.sendStatus(201);
+                    });  
+                }
         }
     });
 });

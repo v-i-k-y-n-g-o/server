@@ -19,6 +19,7 @@ router.get('/v1/data', function(req, res) {
                                 if (err) res.status(400).send(err); 
                                 else {
                                     db.db("bigchain").collection("transactions").count(function(err, transactions) {
+                                        db.close();
                                         res.status(200).send(
                                             {
                                                 entities: assets,
