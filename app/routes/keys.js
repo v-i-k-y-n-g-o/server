@@ -43,7 +43,7 @@ router.get('/v1/keys', function(req, res) {
                     res.status(400).send(err); 
                 }
                 else {
-                    res.status(200).send(resp);
+                    res.status(200).send("hello");
                 }
             }); 
         }
