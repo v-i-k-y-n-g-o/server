@@ -50,7 +50,7 @@ router.get('', function (req, res, next) {
                         res.status(401).send({error: 'Invalid password'})
                     }
                     else {
-                        const token = jwt.sign({"username": username}, process.env.SECRET_WORD);
+                        const token = jwt.sign({"username": username}, "vikyngo");
                         res.status(200).json({token});
                     }
                 }
@@ -69,7 +69,7 @@ router.verifyToken = function(req, res, next) {
     }
     token = token.replace('Bearer ', '');
 
-    jwt.verify(token, process.env.SECRET_WORD, function(err, decoded) {
+    jwt.verify(token, "vikyngo", function(err, decoded) {
         if(err) {
             res.status(401).send({error: 'Token inválido'})
         }

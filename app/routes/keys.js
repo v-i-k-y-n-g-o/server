@@ -17,7 +17,7 @@ router.post('/v1/keys', function(req, res) {
            res.status(400).send(err); 
         }
         else {
-            let keypair = new BigchainDB.Ed25519Keypair(bip39.mnemonicToSeed(process.env.SECRET_WORD+new Date()).slice(0, 32));
+            let keypair = new BigchainDB.Ed25519Keypair(bip39.mnemonicToSeed("vikyngo"+new Date()).slice(0, 32));
             db.db(config.MONGODB.DB_NAME).collection(collection).insertOne({username: res.locals.username, _id: keypair.publicKey, privateKey: keypair.privateKey, data: req.body.data}, function(err, resp) {
                 db.close();
                 if (err) {
