@@ -3,6 +3,8 @@ services:
   app:
     container_name: app
     build: .
+    environment:
+      - SECRET_WORD=${SECRET_WORD}
     command: nodemon ./app/server.js
     depends_on:
       - mongo
