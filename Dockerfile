@@ -1,6 +1,8 @@
 FROM node:latest
 RUN mkdir -p /usr/src/app
 ENV NODE_ENV test
+# TODO: Docker no copia el archivo .env
+ENV SECRET_WORD vikyngo 
 # Create app directory
 WORKDIR /usr/src/
 
