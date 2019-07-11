@@ -30,7 +30,7 @@ const MongoClient = require('mongodb').MongoClient;
  *       "error": "Invalid password"
  *     }
  */
-router.get('', function (req, res, next) {
+router.post('', function (req, res, next) {
     let username = req.body.username;
     let password = req.body.password;
 
@@ -40,18 +40,22 @@ router.get('', function (req, res, next) {
         }
         else {
             db.db(config.MONGODB.DB_NAME).collection("users").find({username: req.body.username}).project({"password": true}).toArray(function(err, resp)  {
+                db.close();
                 if (err) {
-                    db.close();
+                    
                     res.status(400).send(err); 
-                 }
+                }
                 else {
-                    db.close();
-                    if (resp[0].password !== password) {
-                        res.status(401).send({error: 'Invalid password'})
-                    }
-                    else {
-                        const token = jwt.sign({"username": username}, process.env.SECRET_WORD);
-                        res.status(200).json({token});
+                    try {
+                        if (resp[0].password !== password) {
+                            res.status(401).send({error: 'Invalid password'});
+                        }
+                        else {
+                            const token = jwt.sign({"username": username}, process.env.SECRET_WORD);
+                            res.status(200).json({token});
+                        }
+                    } catch {
+                        res.status(401).send({error: 'User not found'});
                     }
                 }
             }); 

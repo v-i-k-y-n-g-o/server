@@ -3,10 +3,11 @@
 const express = require('express');
 const router = express.Router();
 const MongoClient = require('mongodb').MongoClient;
+const config = require('/usr/src/config/environments.js').config();
 
 router.get('/v1/data', function(req, res) {
     // TODO: Leer MongoDB del usuario
-    MongoClient.connect("mongodb://" + "158.176.64.163" + ":" + "32775" + "/",{ useNewUrlParser: true }, function(err, db) {
+    MongoClient.connect("mongodb://" + config.MONGODB.HOST + ":" + config.MONGODB.PORT + "/",{ useNewUrlParser: true }, function(err, db) {
         if (err) res.status(400).send(err); 
         else {
             db.db("bigchain").collection("assets").count(function(err, assets) {
