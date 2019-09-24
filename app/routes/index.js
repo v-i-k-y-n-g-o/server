@@ -3,7 +3,7 @@
 //module.exports = morgan
 const express = require('express');
 const routes = module.exports = express();
-const config = require('/usr/src/config/environments.js').config();
+const config = require('../../config/environments.js').config();
 
 // Dependencies
 const logger = require('../utils/logger');
@@ -20,7 +20,7 @@ const test = require('./test');
 routes.use(express.static(__dirname + '/docs'));
 routes.use('/docs', docs);
 routes.use('/auth', auth);
-routes.use(auth.verifyToken); // TODO: ADD AS A HELPER
+// routes.use(auth.verifyToken); // TODO: ADD AS A HELPER
 routes.use('/api', keys);
 routes.use('/api', entities);
 routes.use('/api', blockchain);

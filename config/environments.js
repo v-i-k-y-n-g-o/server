@@ -4,12 +4,12 @@ const environments = {
         "HOST": "0.0.0.0",
         "BIGCHAINDB": {
             "HOST": "localhost",
-            "PORT": 9994
+            "PORT": 9984
         },
         "MONGODB": {
             "HOST": "localhost",
             "PORT": 27017,
-            "DB_NAME": "blockchainService",
+            "DB_NAME": "vikyngoDB",
         }
     },
     "test": {

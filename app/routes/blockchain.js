@@ -1,5 +1,5 @@
 "use strict"
-const config = require('/usr/src/config/environments.js').config();
+const config = require('../../config/environments.js').config();
 const express = require('express');
 const router = express.Router();
 const { exec } = require('child_process');

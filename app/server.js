@@ -4,7 +4,7 @@
 require('dotenv').config();
 
 // Configuration
-const config = require('/usr/src/config/environments.js').config();
+const config = require('../config/environments.js').config();
 const nopt = require("nopt");
 const knownOpts = {
     "verbose": Boolean,
